@@ -154,6 +154,25 @@ function openGallery(images) {
     setTimeout(() => modal.classList.add('open'), 10);
 }
 
+function toggleZoom(event) {
+    if (!isMobile()) return; 
+    event.stopPropagation();
+    const img = document.getElementById('fullImg');
+    img.classList.toggle('zoomed');
+}
+
+let touchStartX = 0;
+
+document.getElementById('imageModal').addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+});
+
+document.getElementById('imageModal').addEventListener('touchend', e => {
+    let touchEndX = e.changedTouches[0].screenX;
+    if (touchStartX - touchEndX > 50) changeSlide(1);  // Swipe Left -> Next
+    if (touchStartX - touchEndX < -50) changeSlide(-1); // Swipe Right -> Prev
+});
+
 function changeSlide(direction) {
     currentIndex += direction;
     
@@ -166,8 +185,13 @@ function changeSlide(direction) {
 
 function updateGalleryImage() {
     const fullImg = document.getElementById('fullImg');
+    const counter = document.getElementById('galleryCounter');
     fullImg.src = currentGallery[currentIndex];
     fullImg.style.display = 'block';
+    fullImg.classList.remove('zoomed');
+
+    counter.innerText = `${currentIndex + 1} / ${currentGallery.length}`;
+    counter.style.display = currentGallery.length > 1 ? 'block' : 'none';
     
     // Hide other modal types (video/figma)
     document.getElementById('fullVideo').style.display = 'none';

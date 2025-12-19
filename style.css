@@ -538,4 +538,41 @@
    .modal::before {
       content: none;
    }
+
+   #galleryCounter {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--accent-pink);
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        z-index: 3005;
+    }
+
+    .modal-content.zoomable {
+        transition: transform 0.3s ease;
+        touch-action: manipulation;
+    }
+
+    .modal-content.zoomed {
+        transform: scale(1.8) !important;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        display: block;
+        background: white;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        color: var(--accent-pink);
+        font-size: 1.5rem;
+        z-index: 3010;
+    }
  }
