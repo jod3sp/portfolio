@@ -157,14 +157,66 @@ function openGallery(images) {
     setTimeout(() => modal.classList.add('open'), 10);
 }
 
+
+const modal = document.getElementById('imageModal');
+const img = document.getElementById('fullImg');
+
+let touchStartX = 0;
+
+document.getElementById('imageModal').addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+}, { passive: false });
+
+
+document.getElementById('imageModal').addEventListener('touchmove', e => {
+    // Only prevent default if in a gallery (more than 1 image)
+    if (currentGallery.length > 1) {
+        e.preventDefault();
+    }
+}, { passive: false });
+
+document.getElementById('imageModal').addEventListener('touchend', e => {
+    let touchEndX = e.changedTouches[0].screenX;
+    let swipeDistance = touchStartX - touchEndX;
+
+    if (swipeDistance > 50) {
+        changeSlide(1);  // Swipe Left -> Next
+    } else if (swipeDistance < -50) {
+        changeSlide(-1); // Swipe Right -> Prev
+    }
+}, { passive: false });
+
 function changeSlide(direction) {
-    currentIndex += direction;
+    const fullImg = document.getElementById('fullImg');
 
-    // Loop back to start/end
-    if (currentIndex >= currentGallery.length) currentIndex = 0;
-    if (currentIndex < 0) currentIndex = currentGallery.length - 1;
+    const outClass = direction > 0 ? 'slide-out-left' : 'slide-out-right';
+    fullImg.classList.add(outClass);
 
-    updateGalleryImage();
+    // Wait for the slide-out to finish
+    setTimeout(() => {
+        currentIndex += direction;
+
+        // Loop logic
+        if (currentIndex >= currentGallery.length) currentIndex = 0;
+        if (currentIndex < 0) currentIndex = currentGallery.length - 1;
+
+        // Update the Image while it's invisible
+        updateGalleryImage();
+
+        // Move the new image to the "entry side" instantly (no animation)
+        fullImg.style.transition = 'none';
+        fullImg.classList.remove('slide-out-left', 'slide-out-right');
+        const inClass = direction > 0 ? 'slide-out-right' : 'slide-out-left';
+        fullImg.classList.add(inClass);
+
+        // Force a tiny pause so the browser "sees" the new position
+        setTimeout(() => {
+            // Slide the new image into the center
+            fullImg.style.transition = 'transform 0.4s ease, opacity 0.4s ease';
+            fullImg.classList.remove('slide-out-left', 'slide-out-right');
+        }, 20);
+
+    }, 250); 
 }
 
 function updateGalleryImage() {
@@ -189,7 +241,7 @@ document.addEventListener('keydown', function (event) {
     if (modal.style.display === "flex") {
 
         if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
-            event.preventDefault(); 
+            event.preventDefault();
         }
 
         if (event.key === "ArrowRight") {

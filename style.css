@@ -325,6 +325,18 @@
    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.4s ease;
  }
 
+ /* State when the image is sliding out to the left (Next) */
+.slide-out-left {
+    transform: translateX(-100px) !important;
+    opacity: 0 !important;
+}
+
+/* State when the image is sliding out to the right (Prev) */
+.slide-out-right {
+    transform: translateX(100px) !important;
+    opacity: 0 !important;
+}
+
  /* State when zoomed in */
  .modal.open .modal-content {
    transform: scale(1);
