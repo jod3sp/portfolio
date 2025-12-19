@@ -326,16 +326,16 @@
  }
 
  /* State when the image is sliding out to the left (Next) */
-.slide-out-left {
-    transform: translateX(-100px) !important;
-    opacity: 0 !important;
-}
+ .slide-out-left {
+   transform: translateX(-100px) !important;
+   opacity: 0 !important;
+ }
 
-/* State when the image is sliding out to the right (Prev) */
-.slide-out-right {
-    transform: translateX(100px) !important;
-    opacity: 0 !important;
-}
+ /* State when the image is sliding out to the right (Prev) */
+ .slide-out-right {
+   transform: translateX(100px) !important;
+   opacity: 0 !important;
+ }
 
  /* State when zoomed in */
  .modal.open .modal-content {
@@ -452,33 +452,33 @@
  }
 
  #galleryCounter {
-     position: absolute;
-     bottom: 20px;
-     left: 50%;
-     transform: translateX(-50%);
-     background: var(--accent-pink);
-     color: white;
-     padding: 5px 15px;
-     border-radius: 20px;
-     font-size: 0.9rem;
-     z-index: 3005;
-   }
+   position: absolute;
+   bottom: 20px;
+   left: 50%;
+   transform: translateX(-50%);
+   background: var(--accent-pink);
+   color: white;
+   padding: 5px 15px;
+   border-radius: 20px;
+   font-size: 0.9rem;
+   z-index: 3005;
+ }
 
-   .close-btn {
-    display: none;
-   }
+ .close-btn {
+   display: none;
+ }
 
-   .modal.open {
-    background-color: #402a3aae;
-   }
+ .modal.open {
+   background-color: #402a3aae;
+ }
 
-   .modal:not(.open) .close-btn,
-.modal:not(.open) #galleryCounter,
-.modal:not(.open) .nav-btn {
-    opacity: 0 !important;
-    display: none !important;
-    transition: none !important;
-}
+ .modal:not(.open) .close-btn,
+ .modal:not(.open) #galleryCounter,
+ .modal:not(.open) .nav-btn {
+   opacity: 0 !important;
+   display: none !important;
+   transition: none !important;
+ }
 
  footer {
    text-align: center;
@@ -585,33 +585,39 @@
    }
 
    .modal {
-    overflow: auto !important; 
-    display: none;
-    align-items: center;
-    justify-content: center;
-    -webkit-overflow-scrolling: touch;
-  }
+     overflow: hidden !important;
+     display: none;
+     align-items: center;
+     justify-content: center;
+     position: fixed;
+     touch-action: none;
+   }
+
+   .modal-content {
+     position: relative;
+     transition: transform 0.4s ease, opacity 0.4s ease;
+   }
 
    .modal::before {
      content: none;
    }
 
    body.modal-open {
-    overflow: hidden;
-  }
+     overflow: hidden;
+   }
 
    .close-btn {
-        display: block !important; 
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        background: white;
-        border: none;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        color: var(--accent-pink);
-        font-size: 30px;
-        z-index: 3010;
-    }
+     display: block !important;
+     position: absolute;
+     top: 20px;
+     right: 20px;
+     background: white;
+     border: none;
+     border-radius: 50%;
+     width: 40px;
+     height: 40px;
+     color: var(--accent-pink);
+     font-size: 30px;
+     z-index: 3010;
+   }
  }

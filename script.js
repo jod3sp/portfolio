@@ -188,33 +188,33 @@ document.getElementById('imageModal').addEventListener('touchend', e => {
 
 function changeSlide(direction) {
     const fullImg = document.getElementById('fullImg');
+    if (!fullImg) return;
 
     const outClass = direction > 0 ? 'slide-out-left' : 'slide-out-right';
     fullImg.classList.add(outClass);
 
-    // Wait for the slide-out to finish
+    // Wait for slide-out to finish
     setTimeout(() => {
         currentIndex += direction;
 
-        // Loop logic
         if (currentIndex >= currentGallery.length) currentIndex = 0;
         if (currentIndex < 0) currentIndex = currentGallery.length - 1;
 
-        // Update the Image while it's invisible
+        // Swap image while invisible
         updateGalleryImage();
 
-        // Move the new image to the "entry side" instantly (no animation)
+        // Move to the "entry side" instantly
         fullImg.style.transition = 'none';
         fullImg.classList.remove('slide-out-left', 'slide-out-right');
+        
         const inClass = direction > 0 ? 'slide-out-right' : 'slide-out-left';
         fullImg.classList.add(inClass);
 
-        // Force a tiny pause so the browser "sees" the new position
+        // Slide back into center
         setTimeout(() => {
-            // Slide the new image into the center
             fullImg.style.transition = 'transform 0.4s ease, opacity 0.4s ease';
             fullImg.classList.remove('slide-out-left', 'slide-out-right');
-        }, 20);
+        }, 30);
 
     }, 250); 
 }
