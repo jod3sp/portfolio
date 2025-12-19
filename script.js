@@ -157,11 +157,6 @@ function openGallery(images) {
     setTimeout(() => modal.classList.add('open'), 10);
 }
 
-
-const modal = document.getElementById('imageModal');
-const img = document.getElementById('fullImg');
-
-
 function changeSlide(direction) {
     currentIndex += direction;
 
