@@ -26,6 +26,8 @@ function openModal(fileSrc) {
     const figmaEmbed = document.getElementById("figmaEmbed");
     const videoSource = document.getElementById("videoSource");
 
+    document.body.classList.add('modal-open');
+
     // RESET EVERYTHING: Hide all three types first
     fullImg.style.display = "none";
     fullVideo.style.display = "none";
@@ -49,26 +51,33 @@ function openModal(fileSrc) {
 
 function closeModal() {
     const modal = document.getElementById("imageModal");
+    const fullImg = document.getElementById("fullImg");
     const fullVideo = document.getElementById("fullVideo");
     const videoSource = document.getElementById("videoSource");
     const figmaEmbed = document.getElementById("figmaEmbed");
+    const counter = document.getElementById('galleryCounter');
+    const closeBtn = document.querySelector('.close-btn');
+
+    document.body.classList.remove('modal-open');
 
     document.getElementById('prevBtn').style.display = 'none';
     document.getElementById('nextBtn').style.display = 'none';
+    if (counter) counter.style.display = 'none';
+    if (closeBtn) closeBtn.style.display = 'none';
 
-    // 1. Instantly hide the content so the browser doesn't have to render it during animation
     if (figmaEmbed) figmaEmbed.style.display = "none";
-    if (fullImg) fullImg.style.display = "none";
-    if (fullVideo) fullVideo.style.display = "none";
-
-    // 2. Start the scale-out animation for the modal container
-    modal.classList.remove("open");
-
+    if (fullImg) {
+        fullImg.style.display = "none";
+        fullImg.classList.remove('zoomed'); // Reset zoom
+    }
     if (fullVideo) {
+        fullVideo.style.display = "none";
         fullVideo.pause();
     }
 
-    // 3. Wait for the animation to finish (400ms) then do the heavy cleanup
+    modal.classList.remove("open");
+    document.body.classList.remove('modal-open');
+
     setTimeout(() => {
         modal.style.display = "none";
 
@@ -76,8 +85,7 @@ function closeModal() {
         if (videoSource) videoSource.src = "";
         if (fullVideo) fullVideo.load();
         if (figmaEmbed) figmaEmbed.src = "";
-        document.getElementById('prevBtn').style.display = 'none';
-        document.getElementById('nextBtn').style.display = 'none';
+        if (closeBtn) closeBtn.style.display = '';
     }, 400);
 }
 
@@ -109,7 +117,6 @@ function openFigma(url) {
 let scrollInterval;
 const grid = document.getElementById('projectGrid');
 
-// 1. Existing Hover Scroll Logic
 function startScroll(speed) {
     stopScroll();
     function move() {
@@ -123,7 +130,6 @@ function stopScroll() {
     cancelAnimationFrame(scrollInterval);
 }
 
-// 2. NEW: Quick Click Scroll Logic
 function clickScroll(amount) {
     // Stops the hover scroll so they don't fight each other
     stopScroll();
@@ -138,27 +144,69 @@ let currentGallery = [];
 let currentIndex = 0;
 
 function openGallery(images) {
-
     currentGallery = images;
     currentIndex = 0;
 
-    // Show navigation buttons
+    document.body.classList.add('modal-open');
+
     document.getElementById('prevBtn').style.display = 'flex';
     document.getElementById('nextBtn').style.display = 'flex';
 
     updateGalleryImage();
 
-    // Open the modal (reuse your existing open logic)
     const modal = document.getElementById('imageModal');
     modal.style.display = 'flex';
     setTimeout(() => modal.classList.add('open'), 10);
 }
 
+let isZoomed = false;
+let lastTap = 0;
+let startX, startY, scrollLeft, scrollTop;
+
+document.getElementById('fullImg').addEventListener('touchend', function(e) {
+    let currentTime = new Date().getTime();
+    let tapLength = currentTime - lastTap;
+    
+    if (tapLength < 300 && tapLength > 0) {
+        toggleZoom(e);
+        e.preventDefault();
+    }
+    lastTap = currentTime;
+});
+
+const modal = document.getElementById('imageModal');
+const img = document.getElementById('fullImg');
+
+img.addEventListener('touchstart', (e) => {
+    if (!isZoomed) return;
+    startX = e.touches[0].pageX - modal.offsetLeft;
+    startY = e.touches[0].pageY - modal.offsetTop;
+    scrollLeft = modal.scrollLeft;
+    scrollTop = modal.scrollTop;
+});
+
+img.addEventListener('touchmove', (e) => {
+    if (!isZoomed) return;
+    e.preventDefault(); // Stop page from bouncing
+    const x = e.touches[0].pageX - modal.offsetLeft;
+    const y = e.touches[0].pageY - modal.offsetTop;
+    const walkX = (x - startX) * 2; 
+    const walkY = (y - startY) * 2;
+    modal.scrollLeft = scrollLeft - walkX;
+    modal.scrollTop = scrollTop - walkY;
+});
+
 function toggleZoom(event) {
     if (!isMobile()) return;
     event.stopPropagation();
-    const img = document.getElementById('fullImg');
+    
+    isZoomed = !isZoomed;
     img.classList.toggle('zoomed');
+
+    if (!isZoomed) {
+        // Reset scroll position when zooming out
+        modal.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    }
 }
 
 let touchStartX = 0;
@@ -205,8 +253,13 @@ document.addEventListener('keydown', function (event) {
     // Only run if the modal is actually open
     if (modal.style.display === "flex") {
 
+        // 1. THIS IS THE FIX:
+        // It stops the Left/Right arrows from moving the Project Grid cards
+        if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+            event.preventDefault(); 
+        }
+
         if (event.key === "ArrowRight") {
-            // Only slide if navigation buttons are currently visible
             if (document.getElementById('nextBtn').style.display === 'flex') {
                 changeSlide(1);
             }
@@ -222,7 +275,7 @@ document.addEventListener('keydown', function (event) {
     }
 });
 
-document.getElementById('modalOverlay').addEventListener('click', function() {
+document.getElementById('modalOverlay').addEventListener('click', function () {
     if (!isMobile()) {
         // Only allow background-to-close on Desktop
         closeModal();
