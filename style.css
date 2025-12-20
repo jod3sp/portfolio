@@ -156,9 +156,7 @@
  .project-grid .card {
    flex: 0 0 auto;
    width: min(440px, 85vw);
-   /* card width */
    scroll-snap-align: start;
-   /* optional snap */
  }
 
  .card {
@@ -182,7 +180,6 @@
    top: 0;
    height: 100%;
    width: 80px;
-   /* How wide the hover area is */
    z-index: 10;
    display: flex;
    align-items: center;
@@ -204,10 +201,8 @@
    font-size: 3rem;
    color: var(--accent-pink);
    opacity: 0;
-   /* Hidden by default */
    transition: 0.3s;
    pointer-events: none;
-   /* Mouse ignores the text itself */
  }
 
  /* Show arrows and a slight glow on hover */
@@ -225,15 +220,13 @@
 
  .hover-zone:active .arrow {
    transform: scale(0.8);
-   /* Shrinks the arrow slightly when clicked */
    color: var(--main-pink);
  }
 
  .scroll-container {
    position: relative;
    width: 100%;
-   /* Ensure the container doesn't cut off shadows */
-   padding: 0 10px;
+   padding: 0 1px;
  }
 
  .image-box {
@@ -279,9 +272,7 @@
    width: 100%;
    height: 100%;
    object-fit: cover;
-   /* fills the box nicely */
    border-radius: 18px;
-   /* matches the rounded look */
    display: block;
  }
 
@@ -294,7 +285,6 @@
  /* Modal (background) */
  .modal {
    display: none;
-   /* Controlled by flex/none in JS */
    position: fixed;
    z-index: 2000;
    left: 0;
@@ -302,7 +292,6 @@
    width: 100%;
    height: 100%;
    background-color: rgba(62, 39, 35, 0);
-   /* Start transparent */
    cursor: zoom-out;
    transition: background-color 0.4s ease;
    align-items: center;
@@ -318,8 +307,6 @@
    border: 5px solid white;
    box-shadow: 0 10px 50px var(--main-pink);
    background: black;
-
-   /* Animation Start State */
    transform: scale(0.7);
    opacity: 0;
    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.4s ease;
