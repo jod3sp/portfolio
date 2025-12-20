@@ -5,6 +5,7 @@
    --deep-brown: #4E342E;
    --accent-pink: #FF85A1;
    --nav-bg: rgba(255, 255, 255, 0.8);
+   --image-overlay: rgba(255, 133, 161, 0.4);
  }
 
  /* Dark Mode */
@@ -15,6 +16,7 @@
    --deep-brown: #fff0f3;
    --accent-pink: #ffb5c5;
    --nav-bg: rgba(26, 18, 18, 0.9);
+   --image-overlay: rgba(0, 0, 0, 0.6);
  }
 
  * {
@@ -628,6 +630,10 @@ nav {
  body.dark-mode .project-img,
  body.dark-mode .image-box img {
    filter: brightness(0.9) contrast(1.1);
+ }
+
+ body.dark-mode .image-box:hover img {
+   filter: brightness(0.7);
  }
 
  body.dark-mode .hero-img {
