@@ -35,7 +35,6 @@
 
  h1,
  h2,
- #about h3,
  .handwritten {
    font-family: 'Playwrite DE SAS', cursive;
    font-synthesis: none;
@@ -47,6 +46,7 @@
    color: var(--accent-pink);
    margin-top: 0;
    margin-bottom: 15px;
+   font-synthesis: none;
  }
 
  p {
