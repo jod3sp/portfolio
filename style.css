@@ -4,7 +4,7 @@
    --soft-pink: #FFF0F3;
    --deep-brown: #4E342E;
    --accent-pink: #FF85A1;
-   --nav-bg: rgba(255, 255, 255, 0.174);
+   --nav-bg: rgba(255, 255, 255, 0.85);
    --image-overlay: rgba(255, 133, 161, 0.4);
  }
 
@@ -70,6 +70,7 @@
    width: 100%;
    padding: 20px;
    background: var(--nav-bg);
+   -webkit-backdrop-filter: blur(10px); 
    backdrop-filter: blur(10px);
    z-index: 1000;
    display: flex;
@@ -840,6 +841,7 @@
      border-top: 1px solid var(--soft-pink);
      justify-content: center;
      background: var(--nav-bg);
+     -webkit-backdrop-filter: blur(15px);
      backdrop-filter: blur(15px);
    }
 
